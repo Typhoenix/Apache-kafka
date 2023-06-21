@@ -6,7 +6,7 @@ Before getting started with the Kafka producer and consumer examples, make sure 
 
 1. Python: Install Python from the official Python website (https://www.python.org) based on your operating system. Make sure to select the appropriate version for your system.
 
-2. Kafka: Set up a local Kafka cluster using Docker. eYou can find the Docker Compose file at `./docker-compose.yaml`.
+2. Kafka: Set up a local Kafka cluster using Docker. eYou can find the Docker Compose file at [`./docker-compose.yaml`](https://github.com/Typhoenix/Apache-kafka/blob/main/docker-compose.yaml).
 
 3. `confluent_kafka` Library: Install the `confluent_kafka` library, which provides the Kafka client for Python. Open a terminal or command prompt and run the following command:
 
