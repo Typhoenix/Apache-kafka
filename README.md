@@ -1,5 +1,5 @@
 # Apache-kafka
- 
+  
 ## Prerequisites      
  
 Before getting started with the Kafka producer and consumer examples, make sure you have the following prerequisites installed:
