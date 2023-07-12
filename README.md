@@ -14,7 +14,7 @@ Before getting started with the Kafka producer and consumer examples, make sure 
    pip install confluent-kafka
    ```
 
-4. `Faker` Library: Install the `Faker` library, which is used to generate fake user data for testing purposes. Run the following command in the terminal or command prompt:
+4. `Faker` Library: Install the `Faker` library, which is used to generate fake user data for testing purposes. Run the following command in the terminal or command prompt: 
 
    ```bash
    pip install faker
