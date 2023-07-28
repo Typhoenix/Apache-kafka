@@ -8,7 +8,7 @@ c = Consumer({'bootstrap.servers': 'localhost:9092', 'group.id': 'python-consume
 
 print('Available topics to consume: ', c.list_topics().topics)  # Print the list of available topics to consume
 
-c.subscribe(['user-tracker'])  # Subscribe the consumer to the 'user-tracker' topic
+c.subscribe(['user-tracker'])  # Subscribe the consumer to the 'user-tracker' topic 
 
 ################
 

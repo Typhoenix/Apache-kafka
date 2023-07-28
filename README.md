@@ -1,7 +1,7 @@
-# Apache-kafka
-  
-## Prerequisites      
- 
+# Apache-kafka         
+            
+## Prerequisites                                       
+                           
 Before getting started with the Kafka producer and consumer examples, make sure you have the following prerequisites installed:
 
 1. Python: Install Python from the official Python website (https://www.python.org) based on your operating system. Make sure to select the appropriate version for your system.
@@ -14,7 +14,7 @@ Before getting started with the Kafka producer and consumer examples, make sure 
    pip install confluent-kafka
    ```
 
-4. `Faker` Library: Install the `Faker` library, which is used to generate fake user data for testing purposes. Run the following command in the terminal or command prompt:
+4. `Faker` Library: Install the `Faker` library, which is used to generate fake user data for testing purposes. Run the following command in the terminal or command prompt: 
 
    ```bash
    pip install faker
