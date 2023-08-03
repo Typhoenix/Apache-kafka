@@ -85,3 +85,157 @@ class Program
         return System.Text.Json.JsonSerializer.Serialize(data);
     }
 }
+
+
+
+using System;
+using Confluent.Kafka;
+
+namespace KafkaDemo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var brokerList = "localhost:9092";
+            var topic = "test";
+
+            // Create a producer configuration
+            var config = new ProducerConfig
+            {
+                BootstrapServers = brokerList
+            };
+
+            // Create a consumer configuration
+            var consumerConfig = new ConsumerConfig
+            {
+                BootstrapServers = brokerList,
+                GroupId = "test-group"
+            };
+
+            // Produce messages to the topic
+            using (var producer = new ProducerBuilder<string, string>(config).Build())
+            {
+                for (int i = 1; i <= 5; i++)
+                {
+                    var message = new Message<string, string> { Key = null, Value = $"Message {i}" };
+                    producer.Produce(topic, message, deliveryReport => {
+                        Console.WriteLine($"Produced: {message.Value}");
+                    });
+                }
+
+                producer.Flush(TimeSpan.FromSeconds(10)); // Wait for messages to be sent (10 seconds)
+            }
+
+            // Consume messages from the topic
+            using (var consumer = new ConsumerBuilder<string, string>(consumerConfig).Build())
+            {
+                consumer.Subscribe(topic);
+
+                while (true)
+                {
+                    var message = consumer.Consume(TimeSpan.FromSeconds(1));
+                    if (message == null)
+                        continue;
+
+                    Console.WriteLine($"Consumed: {message.Message.Value}");
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+this one worked and produced messages
+
+using System;
+using Confluent.Kafka;
+
+namespace KafkaDemo
+{
+    // Producer interface
+    public interface IMessageProducer
+    {
+        void ProduceMessages(string brokerList, string topic);
+    }
+
+    // Consumer interface
+    public interface IMessageConsumer
+    {
+        void ConsumeMessages(string brokerList, string topic);
+    }
+
+    // Concrete implementation of IMessageProducer
+    public class KafkaMessageProducer : IMessageProducer
+    {
+        public void ProduceMessages(string brokerList, string topic)
+        {
+            var config = new ProducerConfig
+            {
+                BootstrapServers = brokerList
+            };
+
+            using (var producer = new ProducerBuilder<string, string>(config).Build())
+            {
+                for (int i = 1; i <= 5; i++)
+                {
+                    var message = new Message<string, string> { Key = null, Value = $"Message {i}" };
+                    producer.Produce(topic, message, dr => Console.WriteLine($"Produced: {dr.Message.Value}"));
+                    producer.Flush(TimeSpan.FromSeconds(10));
+                }
+            }
+        }
+    }
+
+    // Concrete implementation of IMessageConsumer
+    public class KafkaMessageConsumer : IMessageConsumer
+    {
+        public void ConsumeMessages(string brokerList, string topic)
+        {
+            var config = new ConsumerConfig
+            {
+                BootstrapServers = brokerList,
+                GroupId = "test-group"
+            };
+
+            using (var consumer = new ConsumerBuilder<string, string>(config).Build())
+            {
+                consumer.Subscribe(topic);
+
+                while (true)
+                {
+                    var message = consumer.Consume(TimeSpan.FromSeconds(1));
+                    if (message == null)
+                        continue;
+
+                    Console.WriteLine($"Consumed: {message.Message.Value}");
+                }
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var brokerList = "localhost:9092";
+            var topic = "test";
+
+            try
+            {
+                IMessageProducer producer = new KafkaMessageProducer();
+                producer.ProduceMessages(brokerList, topic);
+
+                IMessageConsumer consumer = new KafkaMessageConsumer();
+                consumer.ConsumeMessages(brokerList, topic);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+    }
+}
